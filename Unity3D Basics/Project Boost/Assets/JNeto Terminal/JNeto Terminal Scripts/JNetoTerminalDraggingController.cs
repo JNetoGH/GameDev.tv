@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JNeto_Terminal.JNeto_Terminal_Scripts
 {
-    public class JNetoTerminalDraggingController : MonoBehaviour
+    public sealed class JNetoTerminalDraggingController : MonoBehaviour
     {
         
         public bool IsDragging { get; set; }

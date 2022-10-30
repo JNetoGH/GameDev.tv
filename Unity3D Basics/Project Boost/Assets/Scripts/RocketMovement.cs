@@ -1,59 +1,51 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public sealed class RocketMovement : MonoBehaviour
-{
+public sealed class RocketMovement : MonoBehaviour {
 
     private Rigidbody _rigidbody;
     
     public float rocketEngineThrust = 1000;
     public float rotationThrust = 100;
-    public float airDrag = 0.25f; // same as air resistance, makes the rocket speed down
+    public float airDrag = 0.25f; // same as air resistance, makes the rocket "slower"
     public Vector3 gravity = new Vector3(0, -9.81f, 0); // default gravity
-    private Vector3 _initialPos;
     private readonly Vector3 _moveDirection = Vector3.up;
     public Vector3 MoveDirection => _moveDirection;
     
-    //processed by the ProcessInputs() and trigger system on editor
-    public bool IsThrusting { get; set; }
-    public bool IsRotatingLeft { get; set; }
-    public bool IsRotatingRight { get; set; }
-    public bool IsGonnaResetPos { get; set; } = false;
+    //processed by the  ProcessKeyboardInputs()/RotateRocket() and trigger system on editor
+    public static bool IsThrusting { get; private set; }
+    public static bool IsRotatingLeft { get; set; }
+    public static bool IsRotatingRight { get; set; }
+    public static bool IsGonnaResetPos { get; set; } = false;
     
-    private void Start()
-    {
+    private void Start() {
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.drag = airDrag;
-        _initialPos = transform.position;
         Physics.gravity = gravity;
     } 
     
-    private void Update()
-    {
+    private void Update() {
         ProcessKeyboardInputs();
         MoveRocket();
         RotateRocket();
         //PrintDebugInfo();
-        if (IsGonnaResetPos)
-        {
-            SetRocketBackToInitialPosition();
+        if (IsGonnaResetPos) {
+            ResetRocketBackToInitialPosition();
             IsGonnaResetPos = false;
         }
     }
     
-    private void MoveRocket()
-    {
-        if (IsThrusting)
-        {
-            // adds force based on the obj pos not based on the world pos
+    private void MoveRocket() {
+        if (IsThrusting) {
+            // adds force based on the object's coordinates coordinates instead of the world's, so, if direction is up,
+            // than it's up relative to the object's rotation (where its "head" is pointing), instead of the world y axis
             Vector3 force = _moveDirection * rocketEngineThrust * Time.deltaTime;
             _rigidbody.AddRelativeForce(force);
         }
     }
     
-    private void RotateRocket()
-    {
-        /*  OLD SOLUTION
-        angular velocity gets some inertia when the player rotates too fast, and it makes the rocket rotate by itself, 
+    private void RotateRocket() {
+        /*  OLD SOLUTION: angular velocity gets some inertia when the player rotates too fast, and it makes the rocket rotate by itself, 
         I want this effect only when the player collides against stuff, so, i'm only setting to zero when the player
         is controlling, this is important in order to make the rocket spin around when it collides.
         if (IsRotatingLeft || IsRotatingRight) _rigidbody.angularVelocity = Vector3.zero; */
@@ -71,30 +63,30 @@ public sealed class RocketMovement : MonoBehaviour
         else if (IsRotatingRight) transform.Rotate(0,0,-1 * rotationThrust * Time.deltaTime);
     }
 
-    public void SetRocketBackToInitialPosition()
-    {
+    private void ResetRocketBackToInitialPosition() {
         // kills the inertia first, otherwise it would keep moving
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
-        
-        // sets back to initial pos
-        transform.rotation = Quaternion.Euler(0,0,0);
-        transform.position = _initialPos;
+        // kills any user input potencial noise
+        IsThrusting = false;
+        IsRotatingLeft = false;
+        IsRotatingRight = false;
+        // resets the scene
+        SceneManager.LoadScene("Sandbox");
     }
     
-    private void ProcessKeyboardInputs()
-    {
+    private static void ProcessKeyboardInputs() {
+        
         ProcessThrustInputs();
+        ProcessRotationInputs();
         ProcessRotationInputs();
         ProcessResetInput();
         
-        void ProcessThrustInputs()
-        {
+        void ProcessThrustInputs() {
             if (Input.GetKey(KeyCode.Space)) IsThrusting = true;
             if (Input.GetKeyUp(KeyCode.Space)) IsThrusting = false;
         }
-        void ProcessRotationInputs()
-        {
+        void ProcessRotationInputs() {
             // can't rotate to left and right at the same time
             if (Input.GetKey(KeyCode.A)) IsRotatingLeft = true;
             else if (Input.GetKey(KeyCode.D)) IsRotatingRight = true;
@@ -102,14 +94,12 @@ public sealed class RocketMovement : MonoBehaviour
             if (Input.GetKeyUp(KeyCode.A)) IsRotatingLeft = false;
             if (Input.GetKeyUp(KeyCode.D)) IsRotatingRight = false;
         }
-        void ProcessResetInput()
-        {
+        void ProcessResetInput() {
             if (Input.GetKey(KeyCode.P)) IsGonnaResetPos = true;
         }
     }
     
-    private void PrintDebugInfo()
-    {
+    private void PrintDebugInfo() {
         Debug.Log($"thrust: {IsThrusting}");
         Debug.Log($"RL: {IsRotatingLeft} | RR: {IsRotatingRight}");
     }

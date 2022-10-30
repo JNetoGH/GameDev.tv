@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FPS_Counter : MonoBehaviour
@@ -12,16 +10,11 @@ public class FPS_Counter : MonoBehaviour
     int frames = 0;
     float timeleft;
     public static float fps;
-
-    GUIStyle textStyle = new GUIStyle();
-
+    
     // Use this for initialization
     void Start()
     {
         timeleft = updateInterval;
-
-        textStyle.fontStyle = FontStyle.Bold;
-        textStyle.normal.textColor = Color.white;
     }
 
     // Update is called once per frame

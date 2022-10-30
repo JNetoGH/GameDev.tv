@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using JNeto_Terminal.JNeto_Terminal_Scripts;
 using UnityEngine;
 
-public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandler
-{
+public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandler {
+    
     private GameObject _rocket;
     private RocketMovement _rocketScript;
     private Rigidbody _rocketRigidbody;
@@ -14,24 +13,19 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
     public List<GameObject> obstacles = new List<GameObject>();
     private bool _showObstaclesTerminalMsg = true;
     
-    public void CalledOnTerminalStart()
-    {
+    public void CalledOnTerminalStart() {
         _rocket = GameObject.Find("Rocket");
         _rocketScript = _rocket.GetComponent<RocketMovement>();
         _rocketRigidbody = _rocket.GetComponent<Rigidbody>();
     }
 
-    public void TreatCommands(string[] commands)
-    {
-        switch (commands[0].ToLower())
-        {
+    public void TreatCommands(string[] commands) {
+        switch (commands[0].ToLower()) {
             case "obstacles":
-            {
                 if (commands[1].ToLower().Equals("on")) _showObstaclesTerminalMsg = true;
                 else if (commands[1].ToLower().Equals("off")) _showObstaclesTerminalMsg = false;
                 TurnObstaclesOnOff(_showObstaclesTerminalMsg);
                 break;
-            }
             case "gravity":    Physics.gravity = new Vector3(0, float.Parse(commands[1])); break;
             case "air":        _rocketRigidbody.drag = float.Parse(commands[1]); break;
             case "e_thrust":   _rocketScript.rocketEngineThrust = float.Parse(commands[1]); break;
@@ -39,8 +33,8 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
         }
     }
 
-    public void ManageScrollViewDebuggingText(out StringBuilder text)
-    {
+    public void ManageScrollViewDebuggingText(out StringBuilder text) {
+        
         Vector3 rocketVel = _rocketRigidbody.velocity;
         Vector3 rocketPos = _rocket.transform.position;
         Vector3 rocketRot = _rocket.transform.rotation.eulerAngles;
@@ -63,12 +57,9 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
         text.AppendLine($"obstacles: {_showObstaclesTerminalMsg}");
     }
 
-    private void TurnObstaclesOnOff(bool on_off)
-    {
+    private void TurnObstaclesOnOff(bool on_off){
         foreach (GameObject obstacle in obstacles)
             obstacle.SetActive(on_off);
     }
-    
-    
-    
+
 }

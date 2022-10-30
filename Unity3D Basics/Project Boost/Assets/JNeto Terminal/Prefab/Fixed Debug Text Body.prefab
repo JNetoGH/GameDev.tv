@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 2775556139487748714}
   - component: {fileID: 4585027266284074373}
   m_Layer: 5
-  m_Name: Fixed Debub Text Body
+  m_Name: Fixed Debug Text Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
