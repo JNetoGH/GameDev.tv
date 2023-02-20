@@ -28,20 +28,18 @@ public sealed class RocketMovement : MonoBehaviour {
         ProcessKeyboardInputs();
         MoveRocket();
         RotateRocket();
-        //PrintDebugInfo();
-        if (IsGonnaResetPos) {
-            ResetRocketBackToInitialPosition();
-            IsGonnaResetPos = false;
-        }
+        
+        if (!IsGonnaResetPos) return;
+        ResetRocketBackToInitialPosition();
+        IsGonnaResetPos = false;
     }
     
     private void MoveRocket() {
-        if (IsThrusting) {
-            // adds force based on the object's coordinates coordinates instead of the world's, so, if direction is up,
-            // than it's up relative to the object's rotation (where its "head" is pointing), instead of the world y axis
-            Vector3 force = _moveDirection * rocketEngineThrust * Time.deltaTime;
-            _rigidbody.AddRelativeForce(force);
-        }
+        if (!IsThrusting) return;
+        // adds force based on the object's coordinates coordinates instead of the world's, so, if direction is up,
+        // than it's up relative to the object's rotation (where its "head" is pointing), instead of the world y axis
+        Vector3 force = rocketEngineThrust * Time.deltaTime * _moveDirection ;
+        _rigidbody.AddRelativeForce(force);
     }
     
     private void RotateRocket() {
@@ -67,7 +65,7 @@ public sealed class RocketMovement : MonoBehaviour {
         // kills the inertia first, otherwise it would keep moving
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
-        // kills any user input potencial noise
+        // kills any user's input potential noise
         IsThrusting = false;
         IsRotatingLeft = false;
         IsRotatingRight = false;
@@ -90,18 +88,12 @@ public sealed class RocketMovement : MonoBehaviour {
             // can't rotate to left and right at the same time
             if (Input.GetKey(KeyCode.A)) IsRotatingLeft = true;
             else if (Input.GetKey(KeyCode.D)) IsRotatingRight = true;
-
             if (Input.GetKeyUp(KeyCode.A)) IsRotatingLeft = false;
             if (Input.GetKeyUp(KeyCode.D)) IsRotatingRight = false;
         }
         void ProcessResetInput() {
-            if (Input.GetKey(KeyCode.P)) IsGonnaResetPos = true;
+            if (Input.GetKey(KeyCode.R)) IsGonnaResetPos = true;
         }
-    }
-    
-    private void PrintDebugInfo() {
-        Debug.Log($"thrust: {IsThrusting}");
-        Debug.Log($"RL: {IsRotatingLeft} | RR: {IsRotatingRight}");
     }
     
 }
