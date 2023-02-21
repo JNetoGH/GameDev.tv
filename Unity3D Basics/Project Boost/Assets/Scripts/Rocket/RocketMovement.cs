@@ -9,14 +9,13 @@ public sealed class RocketMovement : MonoBehaviour {
     public float rotationThrust = 100;
     public float airDrag = 0.25f; // same as air resistance, makes the rocket "slower"
     public Vector3 gravity = new Vector3(0, -9.81f, 0); // default gravity
-    private readonly Vector3 _moveDirection = Vector3.up;
-    public Vector3 MoveDirection => _moveDirection;
-    
+    public Vector3 MoveDirection { get; } = Vector3.up;
+
     //processed by the  ProcessKeyboardInputs()/RotateRocket() and trigger system on editor
     public static bool IsThrusting { get; private set; }
     public static bool IsRotatingLeft { get; set; }
     public static bool IsRotatingRight { get; set; }
-    public static bool IsGonnaResetPos { get; set; } = false;
+
     
     private void Start() {
         _rigidbody = GetComponent<Rigidbody>();
@@ -28,17 +27,13 @@ public sealed class RocketMovement : MonoBehaviour {
         ProcessKeyboardInputs();
         MoveRocket();
         RotateRocket();
-        
-        if (!IsGonnaResetPos) return;
-        ResetRocketBackToInitialPosition();
-        IsGonnaResetPos = false;
     }
     
     private void MoveRocket() {
         if (!IsThrusting) return;
         // adds force based on the object's coordinates coordinates instead of the world's, so, if direction is up,
         // than it's up relative to the object's rotation (where its "head" is pointing), instead of the world y axis
-        Vector3 force = rocketEngineThrust * Time.deltaTime * _moveDirection ;
+        Vector3 force = rocketEngineThrust * Time.deltaTime * MoveDirection ;
         _rigidbody.AddRelativeForce(force);
     }
     
@@ -51,29 +46,34 @@ public sealed class RocketMovement : MonoBehaviour {
         /*this one works better, simply doesn't allow the physics engine to rotate the rocket while the player is rotating,
         but allows to rotate in z when the player isn't controlling, so, when the player crashes against any obstacle,
         it will spin in the Z Axis, if the player is not controlling the rotation*/
-        if (IsRotatingLeft || IsRotatingRight)
-            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        else
-            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        if (IsRotatingLeft || IsRotatingRight) _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        else _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         
         // z == 1 == left direction | z == -1 == right direction, the rocket can't rotate to left and right at the same time
         if (IsRotatingLeft) transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
         else if (IsRotatingRight) transform.Rotate(0,0,-1 * rotationThrust * Time.deltaTime);
     }
 
-    private void ResetRocketBackToInitialPosition() {
+    internal void ResetRocketBackToInitialPosition() {
+        
+        #region KillInertia 
         // kills the inertia first, otherwise it would keep moving
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
+        #endregion
+
+        #region KillUserInputs
         // kills any user's input potential noise
         IsThrusting = false;
         IsRotatingLeft = false;
         IsRotatingRight = false;
-        // resets the scene
-        SceneManager.LoadScene("Sandbox");
+        #endregion
+        
+        // reloads the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
-    private static void ProcessKeyboardInputs() {
+    private void ProcessKeyboardInputs() {
         
         ProcessThrustInputs();
         ProcessRotationInputs();
@@ -92,7 +92,7 @@ public sealed class RocketMovement : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.D)) IsRotatingRight = false;
         }
         void ProcessResetInput() {
-            if (Input.GetKey(KeyCode.R)) IsGonnaResetPos = true;
+            if (Input.GetKey(KeyCode.R)) ResetRocketBackToInitialPosition();
         }
     }
     

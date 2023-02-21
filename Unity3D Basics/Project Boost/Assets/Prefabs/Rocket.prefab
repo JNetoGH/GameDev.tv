@@ -347,8 +347,9 @@ GameObject:
   - component: {fileID: 7816896621228118614}
   - component: {fileID: 3495215184761382549}
   - component: {fileID: 5375634534661584324}
-  - component: {fileID: 985887754}
   - component: {fileID: 8316262039256218904}
+  - component: {fileID: 3844167488647644317}
+  - component: {fileID: 2406948955743481125}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -566,20 +567,6 @@ MonoBehaviour:
   rotationThrust: 100
   airDrag: 0.25
   gravity: {x: 0, y: -9.8, z: 0}
---- !u!114 &985887754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7436902740168645926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12cbdd537dafecc4f95d6e7b83c1eb05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minRotationRangeForLanding: {x: -1, y: -1, z: -1}
-  maxRotationRangeForLanding: {x: 1, y: 1, z: 1}
 --- !u!114 &8316262039256218904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -592,3 +579,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c083b11b60a91b4fa2cfae326422704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3844167488647644317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436902740168645926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cbdd537dafecc4f95d6e7b83c1eb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2406948955743481125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436902740168645926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5a09beb77b42f1a1fe541a7a52ec98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minRotationLandingRange: {x: -1, y: -1, z: -1}
+  maxRotationRangeLanding: {x: 1, y: 1, z: 1}

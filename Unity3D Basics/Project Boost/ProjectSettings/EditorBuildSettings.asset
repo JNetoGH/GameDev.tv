@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Sandbox.unity
+    path: Assets/Scenes/Fly Over.unity
+    guid: 05c1d579642b1b845aadaa34d6d50e1e
+  - enabled: 1
+    path: Assets/Scenes/Fly Between.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
