@@ -7,7 +7,7 @@ using UnityEngine;
 public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandler {
     
     private GameObject _rocket;
-    private RocketMovement _rocketScript;
+    private RocketController _rocketScript;
     private Rigidbody _rocketRigidbody;
     
     public List<GameObject> obstacles = new List<GameObject>();
@@ -15,7 +15,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
     
     public void CalledOnTerminalStart() {
         _rocket = GameObject.Find("Rocket");
-        _rocketScript = _rocket.GetComponent<RocketMovement>();
+        _rocketScript = _rocket.GetComponent<RocketController>();
         _rocketRigidbody = _rocket.GetComponent<Rigidbody>();
     }
 
