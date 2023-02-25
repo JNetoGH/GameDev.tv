@@ -91,7 +91,8 @@ public sealed class RocketController : MonoBehaviour {
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.clip = explosionAudioClip;
-        if (!HasRocketExploded) _audioSource.Play();
+        if (!HasRocketExploded) 
+            _audioSource.Play();
         
         // Updates the state of the rocket
         HasRocketExploded = true;
