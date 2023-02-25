@@ -48,25 +48,21 @@ public sealed class RocketController : MonoBehaviour {
     }
 
     private void Update() {
-        if (HasRocketExploded || HasWon) 
-            return;
+        if (HasRocketExploded || HasWon) return;
         _audioSource.mute = !IsThrusting;
         ProcessKeyboardInputs();
     } 
 
     private void FixedUpdate() {
-        if (HasRocketExploded || HasWon) 
-            return;
+        if (HasRocketExploded || HasWon) return;
         MoveRocket();
         RotateRocket();
     }
 
     //! Manages all the collisions that are not on the landing pad, there is a special script for managing this case
     private void OnCollisionEnter(Collision collision) {
-        
         // Simply ignores the collision if it’s the Landing Pad or whether the player has won and is loading the next level
-        if (collision.gameObject.tag.Equals("LandingPad") || HasWon) 
-            return;
+        if (collision.gameObject.tag.Equals("LandingPad") || HasWon) return;
         
         switch (collision.gameObject.tag) {
             case "Friendly":
@@ -83,7 +79,6 @@ public sealed class RocketController : MonoBehaviour {
     }
 
     private void CrashSequence() {
-        
         // Allows Z axis rotation
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX;
         
@@ -91,8 +86,7 @@ public sealed class RocketController : MonoBehaviour {
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.clip = explosionAudioClip;
-        if (!HasRocketExploded) 
-            _audioSource.Play();
+        if (!HasRocketExploded) _audioSource.Play();
         
         // Updates the state of the rocket
         HasRocketExploded = true;
@@ -103,28 +97,21 @@ public sealed class RocketController : MonoBehaviour {
 
     private void MoveRocket() {
         // Adds force relative on the object's coordinates instead of the world's coordinates (like transform.forward)
-        if (!HasRocketExploded && IsThrusting) 
-            _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection);
+        if (!HasRocketExploded && IsThrusting) _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection);
     }
     
     private void RotateRocket() {
-        
         /* Doesn't allow the physics engine to rotate the rocket while the player is rotating, but allows it in the Z when the player isn't controlling,
         So, when the rocket crashes against any obstacle, it will spin in the Z Axis, as long as the player is not controlling the rotation */
-        if (IsRotatingLeft || IsRotatingRight) 
-            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        else
-            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        if (IsRotatingLeft || IsRotatingRight) _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        else _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         
         // z == 1 == left direction | z == -1 == right direction, the rocket can't rotate to left and right at the same time
-        if (IsRotatingLeft)
-            transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
-        else if (IsRotatingRight)
-            transform.Rotate(0, 0, -1 * rotationThrust * Time.deltaTime);
+        if (IsRotatingLeft) transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
+        else if (IsRotatingRight) transform.Rotate(0, 0, -1 * rotationThrust * Time.deltaTime);
     }
 
     internal void ResetLevel() {
-      
         // Kills the inertia for safety reasons, makes sure it doesn't keep moving 
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
@@ -137,8 +124,7 @@ public sealed class RocketController : MonoBehaviour {
         IsThrusting = Input.GetKey(KeyCode.Space);
         IsRotatingLeft = Input.GetKey(KeyCode.A);
         IsRotatingRight = Input.GetKey(KeyCode.D);
-        if (Input.GetKey(KeyCode.R)) 
-            ResetLevel();
+        if (Input.GetKey(KeyCode.R)) ResetLevel();
     }
 
 }
