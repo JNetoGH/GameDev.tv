@@ -84,10 +84,10 @@ public sealed class RocketController : MonoBehaviour {
 
     private void CrashSequence() {
         
-        // Allow ZAxis Rotation
+        // Allows Z axis rotation
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX;
         
-        // Plays explosion Clip if it's the first collision
+        // Plays the explosion Clip if it's the first collision
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.clip = explosionAudioClip;
@@ -123,8 +123,8 @@ public sealed class RocketController : MonoBehaviour {
     }
 
     internal void ResetLevel() {
-        
-        // Kills the inertia for safety, makes sure it doesn't keep moving 
+      
+        // Kills the inertia for safety reasons, makes sure it doesn't keep moving 
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
         
@@ -133,15 +133,9 @@ public sealed class RocketController : MonoBehaviour {
     }
     
     private void ProcessKeyboardInputs() {
-        
-        // Process thrust inputs
         IsThrusting = Input.GetKey(KeyCode.Space);
-        
-        // Processes rotation inputs: can't rotate to left and right at the same time
         IsRotatingLeft = Input.GetKey(KeyCode.A);
         IsRotatingRight = Input.GetKey(KeyCode.D);
-
-        // Processes reset inputs
         if (Input.GetKey(KeyCode.R)) 
             ResetLevel();
     }
