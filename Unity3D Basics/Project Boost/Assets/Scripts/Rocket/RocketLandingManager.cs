@@ -61,7 +61,7 @@ public class RocketLandingManager : MonoBehaviour {
         // Freezes the rocket at that position for until the next level is loaded
         _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         
-        // Updates rocket's Has Won state
+        // Updates rocket's HasWon state
         RocketController.HasWon = true;
     }
     
