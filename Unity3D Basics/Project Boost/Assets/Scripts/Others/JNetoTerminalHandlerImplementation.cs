@@ -38,7 +38,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
         Vector3 rocketVel = _rocketRigidbody.velocity;
         Vector3 rocketPos = _rocket.transform.position;
         Vector3 rocketRot = _rocket.transform.rotation.eulerAngles;
-        Vector3 rocketMovDir = _rocketScript.MoveDirection;
+        Vector3 rocketMovDir = RocketController.MoveDirection;
 
         text = new StringBuilder();
         text.AppendLine($"FPS: {(int)Math.Ceiling(FPS_Counter.fps)}");
