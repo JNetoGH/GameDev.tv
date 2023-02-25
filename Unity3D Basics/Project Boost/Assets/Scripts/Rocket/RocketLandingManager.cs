@@ -24,7 +24,7 @@ public class RocketLandingManager : MonoBehaviour {
     private bool IsStandingInRange {
         get {
             /* Checks if the rocket is standing over the landing pad in the rotation range,
-               It's done with a range because there is always some noise on the rotation, it's never just 0 in all axis */
+            It's done with a range because there is always some noise on the rotation, it's never just 0 in all axis */
             Vector3 rotationNow = transform.rotation.eulerAngles;  // converts from current rotation from Quaternion to euler
             bool aboveMinRange = rotationNow.x > minRotLandingRange.x && rotationNow.y > minRotLandingRange.y && rotationNow.z > minRotLandingRange.z;
             bool underMaxRange = rotationNow.x < maxRotLandingRange.x && rotationNow.y < maxRotLandingRange.y && rotationNow.z < maxRotLandingRange.z;
