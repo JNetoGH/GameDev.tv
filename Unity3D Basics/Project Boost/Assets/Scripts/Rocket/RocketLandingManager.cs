@@ -19,7 +19,7 @@ public class RocketLandingManager : MonoBehaviour {
     private Rigidbody _rigidbody;
 
     // States (rocket's landing current state)
-    private static bool IsLandingValid => RocketController.HasRocketExploded || RocketController.HasWon;
+    private static bool IsLandingValid => ! (RocketController.HasRocketExploded || RocketController.HasWon);
     private bool IsStandingInRange {
         get {
             // Checks if the rocket is over the Landing Pad within a tolerance range,

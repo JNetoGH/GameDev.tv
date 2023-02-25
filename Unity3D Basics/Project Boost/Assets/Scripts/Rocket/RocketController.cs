@@ -91,8 +91,7 @@ public sealed class RocketController : MonoBehaviour {
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.clip = explosionAudioClip;
-        if (!HasRocketExploded) 
-            _audioSource.Play();
+        if (!HasRocketExploded) _audioSource.Play();
         
         // Updates the state of the rocket
         HasRocketExploded = true;
@@ -103,7 +102,7 @@ public sealed class RocketController : MonoBehaviour {
 
     private void MoveRocket() {
         // Adds force relative on the object's coordinates instead of the world's coordinates (like transform.forward)
-        if (!HasRocketExploded && IsThrusting)
+        if (!HasRocketExploded && IsThrusting) 
             _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection);
     }
     
@@ -111,14 +110,16 @@ public sealed class RocketController : MonoBehaviour {
         
         /* Doesn't allow the physics engine to rotate the rocket while the player is rotating, but allows it in the Z when the player isn't controlling,
         So, when the rocket crashes against any obstacle, it will spin in the Z Axis, as long as the player is not controlling the rotation */
-        if (IsRotatingLeft || IsRotatingRight)
+        if (IsRotatingLeft || IsRotatingRight) 
             _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        else 
+        else
             _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         
         // z == 1 == left direction | z == -1 == right direction, the rocket can't rotate to left and right at the same time
-        if (IsRotatingLeft) transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
-        else if (IsRotatingRight) transform.Rotate(0,0,-1 * rotationThrust * Time.deltaTime);
+        if (IsRotatingLeft)
+            transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
+        else if (IsRotatingRight)
+            transform.Rotate(0, 0, -1 * rotationThrust * Time.deltaTime);
     }
 
     internal void ResetLevel() {
@@ -134,34 +135,15 @@ public sealed class RocketController : MonoBehaviour {
     private void ProcessKeyboardInputs() {
         
         // Process thrust inputs
-        if (Input.GetKey(KeyCode.Space)) IsThrusting = true;
-        if (Input.GetKeyUp(KeyCode.Space)) IsThrusting = false;
+        IsThrusting = Input.GetKey(KeyCode.Space);
         
         // Processes rotation inputs: can't rotate to left and right at the same time
-        if (Input.GetKey(KeyCode.A)) IsRotatingLeft = true;
-        else if (Input.GetKey(KeyCode.D)) IsRotatingRight = true;
-        if (Input.GetKeyUp(KeyCode.A)) IsRotatingLeft = false;
-        if (Input.GetKeyUp(KeyCode.D)) IsRotatingRight = false;
-        
+        IsRotatingLeft = Input.GetKey(KeyCode.A);
+        IsRotatingRight = Input.GetKey(KeyCode.D);
+
         // Processes reset inputs
-        if (Input.GetKey(KeyCode.R)) ResetLevel();
+        if (Input.GetKey(KeyCode.R)) 
+            ResetLevel();
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
