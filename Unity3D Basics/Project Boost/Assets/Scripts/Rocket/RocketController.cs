@@ -64,7 +64,7 @@ public sealed class RocketController : MonoBehaviour {
     //! Manages all the collisions that are not on the landing pad, there is a special script for managing this case
     private void OnCollisionEnter(Collision collision) {
         
-        // Simply ignores the Landing Pad or if the player has won and is loading the next level
+        // Simply ignores the collision if it’s the Landing Pad or whether the player has won and is loading the next level
         if (collision.gameObject.tag.Equals("LandingPad") || HasWon) 
             return;
         
@@ -87,7 +87,7 @@ public sealed class RocketController : MonoBehaviour {
         // Allow ZAxis Rotation
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX;
         
-        // Plays explosion Clip if its the first collision
+        // Plays explosion Clip if it's the first collision
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.clip = explosionAudioClip;
@@ -102,19 +102,19 @@ public sealed class RocketController : MonoBehaviour {
     }
 
     private void MoveRocket() {
-        // adds force relative on the object's coordinates instead of the world's coordinates (like transform.forward)
-        if (!HasRocketExploded && IsThrusting) _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection);
+        // Adds force relative on the object's coordinates instead of the world's coordinates (like transform.forward)
+        if (!HasRocketExploded && IsThrusting)
+            _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection);
     }
     
     private void RotateRocket() {
         
-        /* OLD SOLUTION: angular velocity gets some inertia when the player rotates too fast, and it makes the rocket rotate by itself, I want this effect
-        only when the player collides against stuff, so, i'm only setting to zero when the player is controlling, this is important in order to make the
-        rocket spin around when it collides. if (IsRotatingLeft || IsRotatingRight) _rigidbody.angularVelocity = Vector3.zero; 
-        CURRENT SOLUTION: simply doesn't allow the physics engine to rotate the rocket while the player is rotating, but allows to rotate in z when the
-        player isn't controlling, so, when the player crashes against any obstacle, it will spin in the Z Axis, if the player is not controlling the rotation */
-        if (IsRotatingLeft || IsRotatingRight) _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        else _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        /* Doesn't allow the physics engine to rotate the rocket while the player is rotating, but allows it in the Z when the player isn't controlling,
+        So, when the rocket crashes against any obstacle, it will spin in the Z Axis, as long as the player is not controlling the rotation */
+        if (IsRotatingLeft || IsRotatingRight)
+            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        else 
+            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         
         // z == 1 == left direction | z == -1 == right direction, the rocket can't rotate to left and right at the same time
         if (IsRotatingLeft) transform.Rotate(0, 0, 1 * rotationThrust * Time.deltaTime);
@@ -123,7 +123,7 @@ public sealed class RocketController : MonoBehaviour {
 
     internal void ResetLevel() {
         
-        // Kills the inertia for safety, makes sures it doesn't keep moving 
+        // Kills the inertia for safety, makes sure it doesn't keep moving 
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
         
@@ -133,18 +133,35 @@ public sealed class RocketController : MonoBehaviour {
     
     private void ProcessKeyboardInputs() {
         
-        // Process Thrust Input
+        // Process thrust inputs
         if (Input.GetKey(KeyCode.Space)) IsThrusting = true;
         if (Input.GetKeyUp(KeyCode.Space)) IsThrusting = false;
         
-        // Process Rotation Inputs: can't rotate to left and right at the same time
+        // Processes rotation inputs: can't rotate to left and right at the same time
         if (Input.GetKey(KeyCode.A)) IsRotatingLeft = true;
         else if (Input.GetKey(KeyCode.D)) IsRotatingRight = true;
         if (Input.GetKeyUp(KeyCode.A)) IsRotatingLeft = false;
         if (Input.GetKeyUp(KeyCode.D)) IsRotatingRight = false;
         
-        // ProcessResetInput
+        // Processes reset inputs
         if (Input.GetKey(KeyCode.R)) ResetLevel();
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

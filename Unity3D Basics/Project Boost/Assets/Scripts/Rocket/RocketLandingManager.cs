@@ -15,7 +15,6 @@ public class RocketLandingManager : MonoBehaviour {
     private int _nextSceneIndex = 0;
 
     // Cached Components
-    private RocketController _mainScript;
     private AudioSource _audioSource;
     private Rigidbody _rigidbody;
 
@@ -24,7 +23,7 @@ public class RocketLandingManager : MonoBehaviour {
     private bool IsStandingInRange {
         get {
             // Checks if the rocket is over the Landing Pad within a tolerance range,
-            // there is always some noise on the rotation, it's never 0 in all axis.
+            // there is always some noise on the rotation, it's never 0 in all axes.
             Vector3 rotNow = transform.rotation.eulerAngles;  // Quaternion => Euler
             bool aboveMinRange = rotNow.x > minRotLandingRange.x && rotNow.y > minRotLandingRange.y && rotNow.z > minRotLandingRange.z;
             bool underMaxRange = rotNow.x < maxRotLandingRange.x && rotNow.y < maxRotLandingRange.y && rotNow.z < maxRotLandingRange.z;
@@ -34,7 +33,6 @@ public class RocketLandingManager : MonoBehaviour {
     }
 
     private void Start() {
-        _mainScript = GetComponent<RocketController>();
         _audioSource = GetComponent<AudioSource>();
         _rigidbody = GetComponent<Rigidbody>();
     } 
@@ -47,7 +45,7 @@ public class RocketLandingManager : MonoBehaviour {
        
         Debug.Log("landed properly at the landing pad");
 
-        // plays the winning sound
+        // Plays the winning sound
         _audioSource.clip = winningAudioClip;
         _audioSource.loop = false;
         _audioSource.mute = false;
@@ -60,7 +58,7 @@ public class RocketLandingManager : MonoBehaviour {
             --_nextSceneIndex;
         Invoke("LoadNextLevel", 1f);
         
-        // freezes the rocket at that position for until the next level is loaded
+        // Freezes the rocket at that position for until the next level is loaded
         _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         
         // Updates rocket's Has Won state
