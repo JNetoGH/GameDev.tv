@@ -64,7 +64,7 @@ public sealed class RocketController : MonoBehaviour {
     //! Manages all the collisions that are not on the landing pad, there is a special script for managing this case
     private void OnCollisionEnter(Collision collision) {
         
-        // Simply ignores the collision if it’s the Landing Pad or whether the player has won and is loading the next level
+        // Simply ignores the collision if it’s the Landing Pad or whether the player has won and the next level is being loaded
         if (collision.gameObject.tag.Equals("LandingPad") || HasWon) 
             return;
         
