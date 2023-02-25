@@ -41,11 +41,9 @@ public sealed class RocketController : MonoBehaviour {
         _audioSource.mute = false;
         _audioSource.Play();
         
-        // Rigidbody
+        // Rigidbody & Physics
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.drag = airDrag;
-        
-        // Physics
         Physics.gravity = gravity;
     }
 

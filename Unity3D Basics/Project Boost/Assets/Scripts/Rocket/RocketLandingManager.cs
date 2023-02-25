@@ -25,9 +25,9 @@ public class RocketLandingManager : MonoBehaviour {
         get {
             // Checks if the rocket is over the Landing Pad within a tolerance range,
             // there is always some noise on the rotation, it's never 0 in all axis.
-            Vector3 rotationNow = transform.rotation.eulerAngles;  // Quaternion => Euler
-            bool aboveMinRange = rotationNow.x > minRotLandingRange.x && rotationNow.y > minRotLandingRange.y && rotationNow.z > minRotLandingRange.z;
-            bool underMaxRange = rotationNow.x < maxRotLandingRange.x && rotationNow.y < maxRotLandingRange.y && rotationNow.z < maxRotLandingRange.z;
+            Vector3 rotNow = transform.rotation.eulerAngles;  // Quaternion => Euler
+            bool aboveMinRange = rotNow.x > minRotLandingRange.x && rotNow.y > minRotLandingRange.y && rotNow.z > minRotLandingRange.z;
+            bool underMaxRange = rotNow.x < maxRotLandingRange.x && rotNow.y < maxRotLandingRange.y && rotNow.z < maxRotLandingRange.z;
             bool result = aboveMinRange && underMaxRange;
             return result;
         }
