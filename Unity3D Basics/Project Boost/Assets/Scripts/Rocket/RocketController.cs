@@ -3,14 +3,14 @@ using UnityEngine.SceneManagement;
 
 public sealed class RocketController : MonoBehaviour {
     
-    // Movement and rotation
+    // Movement and Rotation
     [SerializeField] public float rocketEngineThrust = 1000;
     [SerializeField] public float rotationThrust = 100;
     [SerializeField] public static Vector3 MoveDirection => Vector3.up;
     [SerializeField] public float airDrag = 0.25f; // same as air resistance, makes the rocket "slower"
     [SerializeField] public Vector3 gravity = new (0, -9.81f, 0); // default gravity
     
-    // Rocket audio clips
+    // Rocket's Audio Clips
     [SerializeField] private AudioClip engineAudioClip;
     [SerializeField] private AudioClip explosionAudioClip;
 
