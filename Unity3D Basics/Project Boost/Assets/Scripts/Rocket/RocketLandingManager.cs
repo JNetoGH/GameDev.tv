@@ -41,7 +41,7 @@ public class RocketLandingManager : MonoBehaviour {
     
     private void OnCollisionStay(Collision collisionInfo) {
       
-        // Basically checks if the landing collision if valid
+        // Basically, it just validates the landing
         if (!collisionInfo.gameObject.tag.Equals("LandingPad") || !IsStandingInRange || !IsLandingValid)
             return;
        
