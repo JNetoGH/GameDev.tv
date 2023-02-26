@@ -20,8 +20,10 @@ public class RocketLandingManager : MonoBehaviour {
     
     // States (rocket's landing current state)
     private static bool IsLandingValid => ! (RocketController.HasRocketExploded || RocketController.HasWon);
-    private bool IsStandingInRange {   
-        get {   
+    private bool IsStandingInRange 
+    {   
+        get 
+        {   
             // Checks if the rocket is over the Landing Pad within a tolerance range, there is always some noise on the rotation, it's never 0 in all axes.
             Vector3 rotNow = transform.rotation.eulerAngles;  // Quaternion => Euler
             bool aboveMinRange = rotNow.x > minRotLandingRange.x && rotNow.y > minRotLandingRange.y && rotNow.z > minRotLandingRange.z;
@@ -31,13 +33,14 @@ public class RocketLandingManager : MonoBehaviour {
         }
     }
     
-    private void Start() {
+    private void Start() 
+    {
         _audioSource = GetComponent<AudioSource>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnCollisionStay(Collision collisionInfo) {
-        
+    private void OnCollisionStay(Collision collisionInfo) 
+    {
         // Basically, it just validates the landing
         if (!collisionInfo.gameObject.tag.Equals("LandingPad") || !IsStandingInRange || !IsLandingValid)
             return;
