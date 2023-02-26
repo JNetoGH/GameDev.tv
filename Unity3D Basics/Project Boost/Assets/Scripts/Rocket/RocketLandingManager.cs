@@ -17,13 +17,12 @@ public class RocketLandingManager : MonoBehaviour {
     // Cached Components
     private AudioSource _audioSource;
     private Rigidbody _rigidbody;
-
+    
     // States (rocket's landing current state)
     private static bool IsLandingValid => ! (RocketController.HasRocketExploded || RocketController.HasWon);
-    private bool IsStandingInRange {
-        get {
-            // Checks if the rocket is over the Landing Pad within a tolerance range,
-            // there is always some noise on the rotation, it's never 0 in all axes.
+    private bool IsStandingInRange {   
+        get {   
+            // Checks if the rocket is over the Landing Pad within a tolerance range, there is always some noise on the rotation, it's never 0 in all axes.
             Vector3 rotNow = transform.rotation.eulerAngles;  // Quaternion => Euler
             bool aboveMinRange = rotNow.x > minRotLandingRange.x && rotNow.y > minRotLandingRange.y && rotNow.z > minRotLandingRange.z;
             bool underMaxRange = rotNow.x < maxRotLandingRange.x && rotNow.y < maxRotLandingRange.y && rotNow.z < maxRotLandingRange.z;
@@ -31,26 +30,26 @@ public class RocketLandingManager : MonoBehaviour {
             return result;
         }
     }
-
+    
     private void Start() {
         _audioSource = GetComponent<AudioSource>();
         _rigidbody = GetComponent<Rigidbody>();
-    } 
-    
+    }
+
     private void OnCollisionStay(Collision collisionInfo) {
         
         // Basically, it just validates the landing
         if (!collisionInfo.gameObject.tag.Equals("LandingPad") || !IsStandingInRange || !IsLandingValid)
             return;
-       
+        
         Debug.Log("landed properly at the landing pad");
-
+        
         // Plays the winning sound
         _audioSource.clip = winningAudioClip;
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.Play();
-
+       
         // Tries to load the next scene
         _currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         _nextSceneIndex = ++_currentSceneIndex;
@@ -60,7 +59,7 @@ public class RocketLandingManager : MonoBehaviour {
         
         // Freezes the rocket at that position for until the next level is loaded
         _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-        
+       
         // Updates rocket's HasWon state
         RocketController.HasWon = true;
     }
