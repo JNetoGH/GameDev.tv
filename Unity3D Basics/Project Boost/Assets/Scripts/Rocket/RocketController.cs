@@ -80,7 +80,6 @@ public sealed class RocketController : MonoBehaviour {
 
     private void Update() 
     {
-        Debug.Log($"Exploded? {HasRocketExploded}");
         if (HasRocketExploded || HasWon) return;
         _audioSource.mute = !IsThrusting;
         ProcessKeyboardInputs();
@@ -164,10 +163,9 @@ public sealed class RocketController : MonoBehaviour {
     private void ProcessKeyboardInputs() 
     {
         IsThrusting = Input.GetKey(KeyCode.Space);
-        IsRotatingLeft = Input.GetKey(KeyCode.A);
-        IsRotatingRight = Input.GetKey(KeyCode.D);
-        if (Input.GetKey(KeyCode.R)) 
-            ResetLevel();
+        IsRotatingLeft = Input.GetAxisRaw("Horizontal") < 0;
+        IsRotatingRight = Input.GetAxisRaw("Horizontal") > 0;
+        if (Input.GetKey(KeyCode.R)) ResetLevel();
     }
     
 }
