@@ -29,7 +29,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
             case "gravity":    Physics.gravity = new Vector3(0, float.Parse(commands[1])); break;
             case "air":        _rocketRigidbody.drag = float.Parse(commands[1]); break;
             case "e_thrust":   _rocketScript.rocketEngineThrust = float.Parse(commands[1]); break;
-            case "rot_thrust": _rocketScript.rotationThrust = float.Parse(commands[1]); break;
+            case "rot_thrust": _rocketScript.RotationThrust = float.Parse(commands[1]); break;
         }
     }
 
@@ -49,7 +49,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
         text.AppendLine($"rotation ( x: {rocketRot.x:F2} | y: {rocketRot.y:F2} | z: {rocketRot.z:F2} )");
         text.AppendLine($"move dir ( x: {rocketMovDir.x:F2} | y: {rocketMovDir.y:F2} | z: {rocketMovDir.z:F2} )");
         text.AppendLine($"engine thrust: {_rocketScript.rocketEngineThrust}");
-        text.AppendLine($"rotation thrust: {_rocketScript.rotationThrust}");
+        text.AppendLine($"rotation thrust: {_rocketScript.RotationThrust}");
         text.AppendLine(" ");
         text.AppendLine("WORLD");
         text.AppendLine($"gravity ( x: {Physics.gravity.x} | y: {Physics.gravity.y} | z: {Physics.gravity.z} )");
