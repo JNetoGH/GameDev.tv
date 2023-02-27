@@ -26,6 +26,13 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
                 else if (commands[1].ToLower().Equals("off")) _showObstaclesTerminalMsg = false;
                 TurnObstaclesOnOff(_showObstaclesTerminalMsg);
                 break;
+            case "difficulty":
+                switch (commands[1].ToLower()) {
+                    case "easy": _rocketScript.ChangeDifficulty(RocketController.Difficulty.Easy); break;
+                    case "mid": _rocketScript.ChangeDifficulty(RocketController.Difficulty.Mid); break;
+                    case "hard": _rocketScript.ChangeDifficulty(RocketController.Difficulty.Hard); break;
+                }
+                break;
             case "gravity":    Physics.gravity = new Vector3(0, float.Parse(commands[1])); break;
             case "air":        _rocketRigidbody.drag = float.Parse(commands[1]); break;
             case "e_thrust":   _rocketScript.rocketEngineThrust = float.Parse(commands[1]); break;
@@ -42,6 +49,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
 
         text = new StringBuilder();
         text.AppendLine($"FPS: {(int)Math.Ceiling(FPS_Counter.fps)}");
+        text.AppendLine($"DIFFICULTY: {RocketController.DifficultyLevel}");
         text.AppendLine(" ");
         text.AppendLine("ROCKET");
         text.AppendLine($"velocity ( x: {rocketVel.x:F2} | y: {rocketVel.y:F2} | z: {rocketVel.z:F2} )");

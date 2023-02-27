@@ -11,7 +11,7 @@ public sealed class RocketController : MonoBehaviour {
     }
     
     // Difficulty
-    public Difficulty difficulty = Difficulty.Easy;
+    public static Difficulty DifficultyLevel = Difficulty.Easy;
     
     // Movement and Rotation
     internal static Vector3 MoveDirection => Vector3.up;
@@ -64,29 +64,14 @@ public sealed class RocketController : MonoBehaviour {
         IsRotatingLeft = false;
         IsRotatingRight = false;
         
-        // Difficulty Mode
-        switch (difficulty) {
-            case Difficulty.Easy:
-                _rigidbody.angularDrag = 0.05f;
-                RotationThrust = 100;
-                break;
-            case Difficulty.Mid:
-                _rigidbody.angularDrag = 0.30f;
-                RotationThrust = 4;
-                break;
-            case Difficulty.Hard:
-                _rigidbody.angularDrag = 0.1f;
-                RotationThrust = 10f;
-                break;
-            default: throw new ArgumentOutOfRangeException();
-        }
+        ChangeDifficulty(DifficultyLevel);
     }
 
     private void Update() {
         SyncParticles();
         if (HasRocketExploded || HasWon) return;
         _audioSource.mute = !IsThrusting;
-        ProcessKeyboardInputs();
+        //ProcessKeyboardInputs(); // disable to mobile version (just make it as comment)
     }
 
     private void FixedUpdate() {
@@ -112,7 +97,7 @@ public sealed class RocketController : MonoBehaviour {
     }
     
     private void RotateRocket() {
-        switch (this.difficulty) {
+        switch (RocketController.DifficultyLevel) {
             case Difficulty.Mid or Difficulty.Hard: {
                 if (IsRotatingLeft)  _rigidbody.angularVelocity += new Vector3(0, 0,  1 * RotationThrust * Time.deltaTime);
                 if (IsRotatingRight) _rigidbody.angularVelocity += new Vector3(0, 0, -1 * RotationThrust * Time.deltaTime);
@@ -169,7 +154,7 @@ public sealed class RocketController : MonoBehaviour {
         Invoke("ResetLevel", 2f); // Resets the level in 2 seconds (leaves a bit of time, but the player can't control anymore)
     }
     
-    internal void ResetLevel() {
+    public void ResetLevel() {
         // Kills the inertia for safety reasons, makes sure it doesn't keep moving 
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
@@ -182,6 +167,26 @@ public sealed class RocketController : MonoBehaviour {
         IsRotatingLeft = Input.GetAxisRaw("Horizontal") < 0;
         IsRotatingRight = Input.GetAxisRaw("Horizontal") > 0;
         if (Input.GetKey(KeyCode.R)) ResetLevel();
+    }
+
+    public void ChangeDifficulty(Difficulty newDifficulty) {
+        RocketController.DifficultyLevel =  newDifficulty;
+        // Difficulty Mode
+        switch (RocketController.DifficultyLevel) {
+            case Difficulty.Easy:
+                _rigidbody.angularDrag = 0.05f;
+                RotationThrust = 100;
+                break;
+            case Difficulty.Mid:
+                _rigidbody.angularDrag = 0.30f;
+                RotationThrust = 4;
+                break;
+            case Difficulty.Hard:
+                _rigidbody.angularDrag = 0.1f;
+                RotationThrust = 10f;
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
     }
     
 }

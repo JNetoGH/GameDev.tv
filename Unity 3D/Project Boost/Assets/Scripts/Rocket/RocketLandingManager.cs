@@ -22,7 +22,6 @@ public class RocketLandingManager : MonoBehaviour {
     private Rigidbody _rigidbody;
     
     // States (rocket's landing current state)
-    private static bool HasAlreadyPlayedSuccessParticles { get; set; }
     private static bool IsLandingValid => ! (RocketController.HasRocketExploded || RocketController.HasWon);
     private bool IsStandingInRange {   
         get {   
@@ -36,7 +35,6 @@ public class RocketLandingManager : MonoBehaviour {
     }
     
     private void Start() {
-        HasAlreadyPlayedSuccessParticles = false;
         _audioSource = GetComponent<AudioSource>();
         _rigidbody = GetComponent<Rigidbody>();
     }
@@ -47,8 +45,6 @@ public class RocketLandingManager : MonoBehaviour {
             return;
         SuccessSequence();
     }
-
-    
 
     private void SuccessSequence() {
         

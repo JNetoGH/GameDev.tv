@@ -30,7 +30,10 @@ namespace JNeto_Terminal.JNeto_Terminal_Scripts
             // buttons
             _enterButton = GameObject.Find("EnterButton");
             _minimizeButton = GameObject.Find("MinimizeButton");
-        
+            
+            // by default starts always with the terminal minimized
+            MinimizeWindow();
+            
             // method defined in ITerminalHandler
             _terminalHandler.CalledOnTerminalStart();
         } 
