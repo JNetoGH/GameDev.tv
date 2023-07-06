@@ -341,13 +341,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3156866648907528977}
+  - component: {fileID: 5375634534661584324}
+  - component: {fileID: 2406948955743481125}
+  - component: {fileID: 3495215184761382549}
   - component: {fileID: 753112885467894407}
   - component: {fileID: 7816896621228118614}
   - component: {fileID: 2728638821388759231}
   - component: {fileID: 554549613298382445}
-  - component: {fileID: 3495215184761382549}
-  - component: {fileID: 5375634534661584324}
-  - component: {fileID: 2406948955743481125}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -377,61 +377,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &753112885467894407
-Rigidbody:
+--- !u!114 &5375634534661584324
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7436902740168645926}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0.25
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 48
-  m_CollisionDetection: 1
---- !u!65 &7816896621228118614
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7436902740168645926}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 1.2226822, z: 0.5}
-  m_Center: {x: 0, y: -0.72134113, z: 0}
---- !u!65 &2728638821388759231
-BoxCollider:
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696352b8133633e46b287d6b58fc33d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficultyLevel: 0
+  rocketEngineThrust: 1000
+  airDrag: 0.25
+  gravity: {x: 0, y: -9.8, z: 0}
+  _engineAudioClip: {fileID: 8300000, guid: 311e75075615c534fa96ce3da5978475, type: 3}
+  _explosionAudioClip: {fileID: 8300000, guid: 89a39eaff20ac0e44b2d251fde105f2c, type: 3}
+  _thrustParticleSystem: {fileID: 2026246420772991678}
+  _leftSideThrustParticleSystem: {fileID: 9145949005049815091}
+  _rightSideThrustParticleSystem: {fileID: 6462770901779854716}
+  _crashParticleSystem: {fileID: 1046325303043195715}
+--- !u!114 &2406948955743481125
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7436902740168645926}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.4, y: 1.1, z: 0.4}
-  m_Center: {x: 0, y: 0.44, z: 0}
---- !u!65 &554549613298382445
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7436902740168645926}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.42041016, z: 0.1}
-  m_Center: {x: 0, y: 1.193396, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5a09beb77b42f1a1fe541a7a52ec98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minRotLandingRange: {x: -10, y: -10, z: -10}
+  _maxRotLandingRange: {x: 10, y: 10, z: 10}
+  _winningAudioClip: {fileID: 8300000, guid: a6c1aa94462425d47a65491cffa226f2, type: 3}
+  _successParticleSystem: {fileID: 8403389062039442237}
 --- !u!82 &3495215184761382549
 AudioSource:
   m_ObjectHideFlags: 0
@@ -528,44 +511,61 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5375634534661584324
-MonoBehaviour:
+--- !u!54 &753112885467894407
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7436902740168645926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696352b8133633e46b287d6b58fc33d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficulty: 0
-  rocketEngineThrust: 1000
-  airDrag: 0.25
-  gravity: {x: 0, y: -9.8, z: 0}
-  engineAudioClip: {fileID: 8300000, guid: 311e75075615c534fa96ce3da5978475, type: 3}
-  explosionAudioClip: {fileID: 8300000, guid: 89a39eaff20ac0e44b2d251fde105f2c, type: 3}
-  thrustParticleSystem: {fileID: 2026246420772991678}
-  leftSideThrustParticleSystem: {fileID: 9145949005049815091}
-  rightSideThrustParticleSystem: {fileID: 6462770901779854716}
-  crashParticleSystem: {fileID: 1046325303043195715}
---- !u!114 &2406948955743481125
-MonoBehaviour:
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0.25
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 48
+  m_CollisionDetection: 1
+--- !u!65 &7816896621228118614
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7436902740168645926}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e5a09beb77b42f1a1fe541a7a52ec98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  winningAudioClip: {fileID: 8300000, guid: a6c1aa94462425d47a65491cffa226f2, type: 3}
-  minRotLandingRange: {x: -10, y: -10, z: -10}
-  maxRotLandingRange: {x: 10, y: 10, z: 10}
-  successParticleSystem: {fileID: 8403389062039442237}
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1.2226822, z: 0.5}
+  m_Center: {x: 0, y: -0.72134113, z: 0}
+--- !u!65 &2728638821388759231
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436902740168645926}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4, y: 1.1, z: 0.4}
+  m_Center: {x: 0, y: 0.44, z: 0}
+--- !u!65 &554549613298382445
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436902740168645926}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.42041016, z: 0.1}
+  m_Center: {x: 0, y: 1.193396, z: 0}
 --- !u!1 &9000998914645773333
 GameObject:
   m_ObjectHideFlags: 0

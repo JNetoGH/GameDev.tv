@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class RocketLandingManager : MonoBehaviour {
     
-    // Winning Audio Clip
-    [SerializeField] private AudioClip winningAudioClip;
+    [Header("Landing Validation")]
+    [SerializeField] private Vector3 _minRotLandingRange = new (-10,-10,-10);
+    [SerializeField] private Vector3 _maxRotLandingRange = new (10, 10, 10);
     
-    // Landing Validation
-    [SerializeField] private Vector3 minRotLandingRange = new (-10,-10,-10);
-    [SerializeField] private Vector3 maxRotLandingRange = new (10, 10, 10);
+    [Header("Audio")]
+    [SerializeField] private AudioClip _winningAudioClip;
     
-    // Particles
-    [SerializeField] private ParticleSystem successParticleSystem;
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem _successParticleSystem;
     
     // Scene Loading
     private int _currentSceneIndex = 0;
@@ -27,8 +28,8 @@ public class RocketLandingManager : MonoBehaviour {
         get {   
             // Checks if the rocket is over the Landing Pad within a tolerance range, there is always some noise on the rotation, it's never 0 in all axes.
             Vector3 rotNow = transform.rotation.eulerAngles;  // Quaternion => Euler
-            bool aboveMinRange = rotNow.x > minRotLandingRange.x && rotNow.y > minRotLandingRange.y && rotNow.z > minRotLandingRange.z;
-            bool underMaxRange = rotNow.x < maxRotLandingRange.x && rotNow.y < maxRotLandingRange.y && rotNow.z < maxRotLandingRange.z;
+            bool aboveMinRange = rotNow.x > _minRotLandingRange.x && rotNow.y > _minRotLandingRange.y && rotNow.z > _minRotLandingRange.z;
+            bool underMaxRange = rotNow.x < _maxRotLandingRange.x && rotNow.y < _maxRotLandingRange.y && rotNow.z < _maxRotLandingRange.z;
             bool result = aboveMinRange && underMaxRange;
             return result;
         }
@@ -51,7 +52,7 @@ public class RocketLandingManager : MonoBehaviour {
         Debug.Log("landed properly at the landing pad");
         
         // Plays the winning sound
-        _audioSource.clip = winningAudioClip;
+        _audioSource.clip = _winningAudioClip;
         _audioSource.loop = false;
         _audioSource.mute = false;
         _audioSource.Play();
@@ -67,7 +68,7 @@ public class RocketLandingManager : MonoBehaviour {
         _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
        
         // Success Particles
-        successParticleSystem.Play();
+        _successParticleSystem.Play();
         
         // Updates rocket's HasWon state
         RocketController.HasWon = true;

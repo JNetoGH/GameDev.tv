@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public sealed class RocketController : MonoBehaviour {
     
     public enum Difficulty: int {
@@ -9,26 +10,26 @@ public sealed class RocketController : MonoBehaviour {
         Mid = 1,
         Hard = 2
     }
+
+    [Header("Difficulty")]
+    [SerializeField] public Difficulty difficultyLevel = Difficulty.Easy;
     
-    // Difficulty
-    public static Difficulty DifficultyLevel = Difficulty.Easy;
-    
-    // Movement and Rotation
-    internal static Vector3 MoveDirection => Vector3.up;
-    internal float RotationThrust = 5;
+    [Header("Movement and Rotation")]
     [SerializeField] public float rocketEngineThrust = 1000;
-    [SerializeField] public float airDrag = 0.25f; // same as air resistance, makes the rocket "slower"
-    [SerializeField] public Vector3 gravity = new (0, -9.81f, 0); // default gravity
+    [SerializeField] public float airDrag = 0.25f; 
+    [SerializeField] public Vector3 gravity = new (0, -9.81f, 0);
+    public static Vector3 MoveDirection => Vector3.up;
+    public float RotationThrust { get; set; } = 5;
     
-    // Rocket's Audio Clips
-    [SerializeField] private AudioClip engineAudioClip;
-    [SerializeField] private AudioClip explosionAudioClip;
+    [Header("Rocket's Audio Clips")]
+    [SerializeField] private AudioClip _engineAudioClip;
+    [SerializeField] private AudioClip _explosionAudioClip;
     
-    // Particles: passed by the editor, they are all rocket's children
-    [SerializeField] private ParticleSystem thrustParticleSystem;
-    [SerializeField] private ParticleSystem leftSideThrustParticleSystem;
-    [SerializeField] private ParticleSystem rightSideThrustParticleSystem;
-    [SerializeField] private ParticleSystem crashParticleSystem;
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem _thrustParticleSystem;
+    [SerializeField] private ParticleSystem _leftSideThrustParticleSystem;
+    [SerializeField] private ParticleSystem _rightSideThrustParticleSystem;
+    [SerializeField] private ParticleSystem _crashParticleSystem;
     
     // Cached Components
     private Rigidbody _rigidbody;
@@ -43,9 +44,10 @@ public sealed class RocketController : MonoBehaviour {
     private static bool IsRotatingRight { get; set; }
 
     private void Start() {
+        
         // Audio
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.clip = engineAudioClip;
+        _audioSource.clip = _engineAudioClip;
         _audioSource.loop = true;
         _audioSource.mute = false;
         _audioSource.Play();
@@ -64,14 +66,14 @@ public sealed class RocketController : MonoBehaviour {
         IsRotatingLeft = false;
         IsRotatingRight = false;
         
-        ChangeDifficulty(DifficultyLevel);
+        ChangeDifficulty(difficultyLevel);
     }
 
     private void Update() {
         SyncParticles();
         if (HasRocketExploded || HasWon) return;
         _audioSource.mute = !IsThrusting;
-        //ProcessKeyboardInputs(); // disable to mobile version (just make it as comment)
+        ProcessKeyboardInputs(); // disable to mobile version (just make it as comment)
     }
 
     private void FixedUpdate() {
@@ -93,11 +95,12 @@ public sealed class RocketController : MonoBehaviour {
 
     private void MoveRocket() {
         if (!(IsThrusting && !HasRocketExploded && !HasWon)) return;
-        _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection); // It's like transform.up
+        // Relative to its own coordinates, not the world, like transform.up
+        _rigidbody.AddRelativeForce(force: rocketEngineThrust * Time.deltaTime * MoveDirection); 
     }
     
     private void RotateRocket() {
-        switch (RocketController.DifficultyLevel) {
+        switch (difficultyLevel) {
             case Difficulty.Mid or Difficulty.Hard: {
                 if (IsRotatingLeft)  _rigidbody.angularVelocity += new Vector3(0, 0,  1 * RotationThrust * Time.deltaTime);
                 if (IsRotatingRight) _rigidbody.angularVelocity += new Vector3(0, 0, -1 * RotationThrust * Time.deltaTime);
@@ -120,20 +123,20 @@ public sealed class RocketController : MonoBehaviour {
         // Debug.Log($"{IsThrusting} {HasRocketExploded} {HasWon}");
         
         // Main Engine
-        if (!IsThrusting || HasRocketExploded || HasWon) thrustParticleSystem.Stop();
-        else if (IsThrusting && !thrustParticleSystem.isPlaying) thrustParticleSystem.Play();
+        if (!IsThrusting || HasRocketExploded || HasWon) _thrustParticleSystem.Stop();
+        else if (IsThrusting && !_thrustParticleSystem.isPlaying) _thrustParticleSystem.Play();
         
         // Left Engine Thrust (turns rocket right)
-        if (!IsRotatingRight || HasRocketExploded || HasWon) leftSideThrustParticleSystem.Stop();
-        else if (IsRotatingRight && !leftSideThrustParticleSystem.isPlaying) leftSideThrustParticleSystem.Play();
+        if (!IsRotatingRight || HasRocketExploded || HasWon) _leftSideThrustParticleSystem.Stop();
+        else if (IsRotatingRight && !_leftSideThrustParticleSystem.isPlaying) _leftSideThrustParticleSystem.Play();
         
         // Right Engine Thrust (turns rocket left)
-        if (!IsRotatingLeft || HasRocketExploded || HasWon) rightSideThrustParticleSystem.Stop();
-        else if (IsRotatingLeft && !rightSideThrustParticleSystem.isPlaying) rightSideThrustParticleSystem.Play();
+        if (!IsRotatingLeft || HasRocketExploded || HasWon) _rightSideThrustParticleSystem.Stop();
+        else if (IsRotatingLeft && !_rightSideThrustParticleSystem.isPlaying) _rightSideThrustParticleSystem.Play();
         
         // Crash Particles
-        if (HasRocketExploded && !crashParticleSystem.isPlaying && !HasAlreadyPlayedExplosionParticles) {
-            crashParticleSystem.Play();
+        if (HasRocketExploded && !_crashParticleSystem.isPlaying && !HasAlreadyPlayedExplosionParticles) {
+            _crashParticleSystem.Play();
             HasAlreadyPlayedExplosionParticles = true;
         }
     }
@@ -145,7 +148,7 @@ public sealed class RocketController : MonoBehaviour {
         // Plays the explosion Clip
         _audioSource.loop = false;
         _audioSource.mute = false;
-        _audioSource.clip = explosionAudioClip;
+        _audioSource.clip = _explosionAudioClip;
         _audioSource.Play();
 
         Debug.Log("Rocket blew up");
@@ -170,9 +173,8 @@ public sealed class RocketController : MonoBehaviour {
     }
 
     public void ChangeDifficulty(Difficulty newDifficulty) {
-        RocketController.DifficultyLevel =  newDifficulty;
-        // Difficulty Mode
-        switch (RocketController.DifficultyLevel) {
+        difficultyLevel =  newDifficulty;
+        switch (difficultyLevel) {
             case Difficulty.Easy:
                 _rigidbody.angularDrag = 0.05f;
                 RotationThrust = 100;

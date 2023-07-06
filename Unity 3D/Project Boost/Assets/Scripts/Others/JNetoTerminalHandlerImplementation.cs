@@ -4,6 +4,7 @@ using System.Text;
 using JNeto_Terminal.JNeto_Terminal_Scripts;
 using UnityEngine;
 
+
 public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandler {
     
     private GameObject _rocket;
@@ -49,7 +50,7 @@ public class JNetoTerminalHandlerImplementation : MonoBehaviour, ITerminalHandle
 
         text = new StringBuilder();
         text.AppendLine($"FPS: {(int)Math.Ceiling(FPS_Counter.fps)}");
-        text.AppendLine($"DIFFICULTY: {RocketController.DifficultyLevel}");
+        text.AppendLine($"DIFFICULTY: {_rocketScript.difficultyLevel}");
         text.AppendLine(" ");
         text.AppendLine("ROCKET");
         text.AppendLine($"velocity ( x: {rocketVel.x:F2} | y: {rocketVel.y:F2} | z: {rocketVel.z:F2} )");
